@@ -92,7 +92,7 @@ class UserControllerTests {
     @DisplayName("При добавлении пользователя с пустым значением имени будет использован логин")
     @Test
     public void saveUserWithEmptyName() {
-        User user = new User(1, "anabell@mail.ru", "a777", "", LocalDate.of(2000, 10, 12));
+        User user = new User(1, "anabell@mail.ru", "a777", null, LocalDate.of(2000, 10, 12));
         controller.create(user);
 
 

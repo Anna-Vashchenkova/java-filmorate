@@ -30,7 +30,7 @@ public class UserController {
         if (user.getBirthday().isAfter(LocalDate.now())) {
             throw new ValidationException("дата рождения не может быть в будущем");
         }
-        if (user.getName().isEmpty()) {
+        if (user.getName() == null) {
             user.setName(user.getLogin());
         } else if (users.contains(user)) {
             throw new ValidationException("пользователь с указанным адресом электронной почты уже был добавлен ранее");
