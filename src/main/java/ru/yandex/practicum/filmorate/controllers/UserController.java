@@ -19,10 +19,10 @@ public class UserController {
 
     @PostMapping
     public User create(@RequestBody User user) throws ValidationException {
-        if (user.getEmail().isEmpty()||(user.getEmail() == null)||(!user.getEmail().contains("@"))) {
+        if (user.getEmail().isEmpty() || (user.getEmail() == null) || (!user.getEmail().contains("@"))) {
             throw new ValidationException("в переданных данных электронная почта не может быть пустой и должна содержать символ @");
         }
-        if ((user.getLogin().isEmpty())||(user.getLogin().contains(" "))) {
+        if ((user.getLogin().isEmpty()) || (user.getLogin().contains(" "))) {
             throw new ValidationException("логин не может быть пустым и содержать пробелы");
         }
         if (user.getBirthday().isAfter(LocalDate.now())) {
@@ -30,8 +30,7 @@ public class UserController {
         }
         if (user.getName().isEmpty()) {
             user.setName(user.getLogin());
-        }
-        else if (users.contains(user)) {
+        } else if (users.contains(user)) {
             throw new ValidationException("пользователь с указанным адресом электронной почты уже был добавлен ранее");
         }
         users.add(user);

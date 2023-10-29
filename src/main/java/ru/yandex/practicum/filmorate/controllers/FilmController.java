@@ -25,8 +25,8 @@ public class FilmController {
 
     @PostMapping(value = "/film")
     public Film create(@RequestBody Film film) {
-        if ((film.getName().isEmpty())||(film.getDescription().length()>200)
-                ||(film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28)))||(film.getDuration()<0)) {
+        if ((film.getName().isEmpty()) || (film.getDescription().length() > 200)
+                || (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) || (film.getDuration() < 0)) {
             throw new ValidationException("не выполнены условия: название не может быть пустым;\n" +
                     "    максимальная длина описания — 200 символов;\n" +
                     "    дата релиза — не раньше 28 декабря 1895 года;\n" +
@@ -38,9 +38,9 @@ public class FilmController {
 
     @PutMapping
     public Film updateFilm(@RequestBody Film film) throws ValidationException {
-        if ((!film.getName().isEmpty())&&(film.getDescription().length()<200)
-                &&(film.getReleaseDate().isAfter(LocalDate.of(1895, 12, 28)))
-                &&(film.getDuration()>0)) {
+        if ((!film.getName().isEmpty()) && (film.getDescription().length() < 200)
+                && (film.getReleaseDate().isAfter(LocalDate.of(1895, 12, 28)))
+                && (film.getDuration() > 0)) {
             films.add(film);
             return film;
         } else {
