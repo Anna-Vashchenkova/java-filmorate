@@ -5,9 +5,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -41,7 +43,15 @@ public class FilmController {
         if ((!film.getName().isEmpty()) && (film.getDescription().length() < 200)
             && (film.getReleaseDate().isAfter(LocalDate.of(1895, 12, 28)))
             && (film.getDuration() > 0)) {
-            films.add(film);
+            Optional<Film> optionalFilm = findAll().stream().filter(film1 -> film1.getId() == film.getId()).findFirst();
+            if (optionalFilm.isEmpty()) {
+                throw new ValidationException("фильма с таким Id не существует");
+            }
+            Film filmUpdate = optionalFilm.get();
+            filmUpdate.setName(film.getName());
+            filmUpdate.setDescription(film.getDescription());
+            filmUpdate.setReleaseDate(film.getReleaseDate());
+            filmUpdate.setDuration(film.getDuration());
             return film;
         } else {
             throw new ValidationException("не выполнены условия: название не может быть пустым;\n" +

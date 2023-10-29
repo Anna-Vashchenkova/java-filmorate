@@ -69,4 +69,15 @@ class FilmControllerTests {
                      "    дата релиза — не раньше 28 декабря 1895 года;\n" +
                      "    продолжительность фильма должна быть положительной", exception.getMessage());
     }
+
+    @DisplayName("При обновлении фильма с несуществующим id нужно вернуть ошибку")
+    @Test
+    public void updateFilmWithNonExistingId() {
+        Film film = new Film(999, "kino2", "---",
+                LocalDate.of(2023, 10, 1), 60);
+        ValidationException exception = assertThrows(ValidationException.class, () -> {
+            controller.updateFilm(film);
+        });
+        assertEquals("фильма с таким Id не существует", exception.getMessage());
+    }
 }
