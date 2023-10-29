@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @RestController
-@RequestMapping
+@RequestMapping(value = "/users")
 public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
