@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @RestController
@@ -16,10 +17,11 @@ public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
     Set<User> users = new HashSet<>();
+    private int lastId = 0;
 
     @PostMapping
     public User create(@RequestBody User user) throws ValidationException {
-        if (user.getEmail().isEmpty() || (user.getEmail() == null) || (!user.getEmail().contains("@"))) {
+        if ((user.getEmail() == null) || (user.getEmail().isEmpty()) || (!user.getEmail().contains("@"))) {
             throw new ValidationException("в переданных данных электронная почта не может быть пустой и должна содержать символ @");
         }
         if ((user.getLogin().isEmpty()) || (user.getLogin().contains(" "))) {
@@ -33,6 +35,7 @@ public class UserController {
         } else if (users.contains(user)) {
             throw new ValidationException("пользователь с указанным адресом электронной почты уже был добавлен ранее");
         }
+        user.setId(++lastId);
         users.add(user);
         return user;
     }
@@ -42,7 +45,15 @@ public class UserController {
         if (user.getEmail().isEmpty()) {
             throw new ValidationException("в переданных данных отсутствует адрес электронной почты");
         } else {
-            users.add(user);
+            Optional<User> optionalUser = getUsers().stream().filter(user1 -> user1.getId() == user.getId()).findFirst();
+            if (optionalUser.isEmpty()) {
+                throw new ValidationException("пользователя с таким Id не существует");
+            }
+            User userUpdate = optionalUser.get();
+            userUpdate.setEmail(user.getEmail());
+            userUpdate.setLogin(user.getLogin());
+            userUpdate.setName(user.getName());
+            userUpdate.setBirthday(user.getBirthday());
             return user;
         }
     }
