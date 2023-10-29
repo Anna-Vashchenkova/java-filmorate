@@ -17,6 +17,7 @@ public class FilmController {
 
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
     private final Set<Film> films = new HashSet<>();
+    private int lastId = 0;
 
     @GetMapping("/films")
     public Set<Film> findAll() {
@@ -33,6 +34,7 @@ public class FilmController {
                     "    дата релиза — не раньше 28 декабря 1895 года;\n" +
                     "    продолжительность фильма должна быть положительной");
         }
+        film.setId(++lastId);
         films.add(film);
         return film;
     }
