@@ -36,7 +36,7 @@ public class FilmController {
         return film;
     }
 
-    @PutMapping
+    @PutMapping(value = "/film")
     public Film updateFilm(@RequestBody Film film) throws ValidationException {
         if ((!film.getName().isEmpty()) && (film.getDescription().length() < 200)
             && (film.getReleaseDate().isAfter(LocalDate.of(1895, 12, 28)))
