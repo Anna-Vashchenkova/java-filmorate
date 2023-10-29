@@ -23,7 +23,7 @@ public class FilmController {
         return films;
     }
 
-    @PostMapping(value = "/film")
+    @PostMapping(value = "/films")
     public Film create(@RequestBody Film film) {
         if ((film.getName().isEmpty()) || (film.getDescription().length() > 200)
             || (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) || (film.getDuration() < 0)) {
@@ -36,7 +36,7 @@ public class FilmController {
         return film;
     }
 
-    @PutMapping(value = "/film")
+    @PutMapping(value = "/films")
     public Film updateFilm(@RequestBody Film film) throws ValidationException {
         if ((!film.getName().isEmpty()) && (film.getDescription().length() < 200)
             && (film.getReleaseDate().isAfter(LocalDate.of(1895, 12, 28)))
