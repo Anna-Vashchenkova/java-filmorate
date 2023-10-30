@@ -18,6 +18,7 @@ class UserControllerTests {
     @Test
     public void saveUserWithEmptyEmail() {
         User user = new User(1, "", "a777", "anabell", LocalDate.of(2000, 10, 12));
+
         ValidationException exception = assertThrows(ValidationException.class, () -> {
             controller.create(user);
         });
@@ -28,6 +29,7 @@ class UserControllerTests {
     @Test
     public void saveUserNotTrueEmail() {
         User user = new User(1, "anabell!mail.ru", "a777", "anabell", LocalDate.of(2000, 10, 12));
+
         ValidationException exception = assertThrows(ValidationException.class, () -> {
             controller.create(user);
         });
@@ -38,6 +40,7 @@ class UserControllerTests {
     @Test
     public void saveUserWithEmptyLogin() {
         User user = new User(1, "anabell@mail.ru", "", "anabell", LocalDate.of(2000, 10, 12));
+
         ValidationException exception = assertThrows(ValidationException.class, () -> {
             controller.create(user);
         });
@@ -48,6 +51,7 @@ class UserControllerTests {
     @Test
     public void saveUserWithNotTrueLogin() {
         User user = new User(1, "anabell@mail.ru", "a 777", "anabell", LocalDate.of(2000, 10, 12));
+
         ValidationException exception = assertThrows(ValidationException.class, () -> {
             controller.create(user);
         });
@@ -58,6 +62,7 @@ class UserControllerTests {
     @Test
     public void saveUserWithNotTrueBirthday() {
         User user = new User(1, "anabell@mail.ru", "a777", "anabell", LocalDate.of(2025, 10, 12));
+
         ValidationException exception = assertThrows(ValidationException.class, () -> {
             controller.create(user);
         });
@@ -68,6 +73,7 @@ class UserControllerTests {
     @Test
     public void updateUserWithNonExistingId() {
         User user = new User(9999, "anabell@mail.ru", "a777", "anabell", LocalDate.of(2000, 10, 12));
+
         ValidationException exception = assertThrows(ValidationException.class, () -> {
             controller.updateUser(user);
         });
@@ -79,10 +85,9 @@ class UserControllerTests {
     public void updateUser() {
         User user = new User(0, "anabell_543@mail.ru", "a777", "anabell", LocalDate.of(2000, 10, 12));
         User resultUser = controller.create(user);
-
         User userForUpdate = new User(resultUser.getId(), "anabell_888@mail.ru", "a888", "anabell888", LocalDate.of(2000, 9, 14));
-        controller.updateUser(userForUpdate);
 
+        controller.updateUser(userForUpdate);
         Set<User> users = controller.getUsers();
         Optional<User> optionalUser = users.stream().filter(user1 -> user1.getId() == userForUpdate.getId()).findFirst();
         assertTrue(optionalUser.isPresent());
@@ -95,8 +100,6 @@ class UserControllerTests {
         User user = new User(1, "anabell@mail.ru", "a777", null, LocalDate.of(2000, 10, 12));
         controller.create(user);
 
-
         assertTrue(controller.getUsers().contains(user));
     }
-
 }
