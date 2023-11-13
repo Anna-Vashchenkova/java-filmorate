@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
 
 import java.time.LocalDate;
 
@@ -11,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FilmControllerTests {
 
-    private final FilmController controller = new FilmController();
+    private final FilmController controller = new FilmController(new InMemoryFilmStorage());
 
     @DisplayName("При сохранении фильма с пустым именем необходимо вернуть ошибку")
     @Test
