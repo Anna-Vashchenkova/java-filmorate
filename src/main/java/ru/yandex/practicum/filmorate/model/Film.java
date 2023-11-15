@@ -15,4 +15,19 @@ public class Film {
     private LocalDate releaseDate;
     private int duration;
     private Set<Integer> likes;
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+
+        Film film = (Film) object;
+
+        return id == film.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

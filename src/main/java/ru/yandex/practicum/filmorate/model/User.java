@@ -15,4 +15,19 @@ public class User {
     private String name;
     private LocalDate birthday;
     private Set<Integer> friends;
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+
+        User user = (User) object;
+
+        return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

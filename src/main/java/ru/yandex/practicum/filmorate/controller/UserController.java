@@ -38,8 +38,8 @@ public class UserController {
         userService.deleteUser(userId);
     }
 
-    @PostMapping(value = "/{userId}/friends")
-    public Set<Integer> addFriends(@PathVariable("userId") int userId, int friendsId) {
+    @PutMapping(value = "/{userId}/friends/{friendsId}")
+    public Set<Integer> addFriends(@PathVariable int userId, @PathVariable int friendsId) {
         return  userService.addFriends(userId, friendsId);
     }
 
@@ -48,7 +48,12 @@ public class UserController {
         userService.deleteFriends(userId, friendsId);
     }
 
-    @GetMapping("/{userId}/common-friends/{userId2}")
+    @GetMapping("/{userId}/friends")
+    public Set<Integer> getFriends(@PathVariable int userId) {
+        return userService.getFriends(userId);
+    }
+
+    @GetMapping("/{userId}/friends/common/{userId2}")
     public Set<Integer> commonFriends(@PathVariable int userId, @PathVariable int userId2) {
         return userService.commonFriends(userId, userId2);
     }

@@ -42,8 +42,8 @@ public class FilmController {
         filmService.deleteFilm(filmId);
     }
 
-    @PostMapping(value = "/films/{filmId}/likes")
-    public Set<Integer> addLikes(@PathVariable("filmId") int userId, int filmId) {
+    @PostMapping(value = "/films/{filmId}/likes/{userId}")
+    public Set<Integer> addLikes(@PathVariable int userId, @PathVariable int filmId) {
         return filmService.addLikes(userId, filmId);
     }
 
@@ -52,7 +52,7 @@ public class FilmController {
         filmService.deleteLikes(userId, filmId);
     }
 
-    @GetMapping("/films/top10")
+    @GetMapping("/films/popular?count={count}")
     public Set<Film> getTop10Films() {
         return  filmService.getTop10Films();
     }
