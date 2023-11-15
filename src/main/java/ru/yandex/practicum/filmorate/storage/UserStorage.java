@@ -5,8 +5,9 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.Set;
 
 public interface UserStorage {
-    public User create(User user);
-    public User updateUser(User user);
-    public Set<User> getUsers();
-    public void deleteUser(User user);
-}
+    User create(User user);
+    User updateUser(User user);
+    Set<User> getUsers();
+    void deleteUser(User user);
+    User getUserById(int userId);
+    }

@@ -42,6 +42,7 @@ public class InMemoryFilmStorage implements FilmStorage{
             filmUpdate.setDescription(film.getDescription());
             filmUpdate.setReleaseDate(film.getReleaseDate());
             filmUpdate.setDuration(film.getDuration());
+            filmUpdate.setLikes(film.getLikes());
             return film;
         } else {
             throw new ValidationException("не выполнены условия: название не может быть пустым;\n" +
@@ -58,6 +59,15 @@ public class InMemoryFilmStorage implements FilmStorage{
     }
     @Override
     public void deleteFilm(Film film) {
-        films.remove(film);
+        if (films.contains(film)) {
+            films.remove(film);
+        } else {
+            throw new ValidationException("Фильм не найден.");
+        }
+    }
+
+    @Override
+    public Film getById(int filmId) {
+        return films.stream().filter(film -> film.getId() == filmId).findFirst().get();
     }
 }

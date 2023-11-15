@@ -59,6 +59,16 @@ public class InMemoryUserStorage implements UserStorage{
     }
     @Override
     public void deleteUser(User user) {
-        users.remove(user);
+        if (users.contains(user)) {
+            users.remove(user);
+        } else {
+            throw new ValidationException("Пользователь не найден.");
+        }
     }
+
+    @Override
+    public User getUserById(int userId) {
+        return users.stream().filter(user -> user.getId() == userId).findFirst().get();
+    }
+
 }

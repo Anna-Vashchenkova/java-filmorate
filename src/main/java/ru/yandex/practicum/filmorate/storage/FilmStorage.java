@@ -5,8 +5,9 @@ import ru.yandex.practicum.filmorate.model.Film;
 import java.util.Set;
 
 public interface FilmStorage {
-    public Film create(Film film);
-    public Film updateFilm(Film film);
-    public Set<Film> findAll();
-    public void deleteFilm(Film film);
+    Film create(Film film);
+    Film updateFilm(Film film);
+    Set<Film> findAll();
+    void deleteFilm(Film film);
+    Film getById(int filmId);
 }
