@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
-
 import java.util.Set;
 
 @Slf4j
@@ -46,8 +45,9 @@ public class FilmController {
         filmService.deleteLikes(userId, filmId);
     }
 
-    @GetMapping("/films/popular?count={count}")
-    public Set<Film> getTop10Films() {
-        return  filmService.getTop10Films();
+    @GetMapping("/films/popular")
+    public Set<Film> getTop10Films(@RequestParam("count")int count) {
+        log.info("Поиск " + count + " популярных фильтмов");
+        return  filmService.getTop10Films(count);
     }
 }

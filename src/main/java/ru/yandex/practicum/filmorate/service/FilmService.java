@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
@@ -99,8 +100,14 @@ public class FilmService {
         }
     }
 
-    public Set<Film> getTop10Films() {
-        Set<Film> all = filmStorage.findAll();
+    public Set<Film> getTop10Films(int count) {
+        return filmStorage.findAll().stream()
+                .sorted(Comparator
+                        .comparingInt(film -> ((Film)film).getLikes().size())
+                        .thenComparing(film -> ((Film)film).getName()))
+                .limit(count)
+                .collect(Collectors.toSet());
+        /*Set<Film> all = filmStorage.findAll();
         List<Film> toSort = new ArrayList<>();
         for (Film film : all) {
             toSort.add(film);
@@ -116,6 +123,6 @@ public class FilmService {
         for (Film film : toSort) {
             result.add(film);
         }
-        return result;
+        return result;*/
     }
 }
