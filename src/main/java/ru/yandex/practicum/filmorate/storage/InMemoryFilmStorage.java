@@ -10,16 +10,17 @@ import java.util.Set;
 
 @Slf4j
 @Component
-public class InMemoryFilmStorage implements FilmStorage{
+public class InMemoryFilmStorage implements FilmStorage {
     private final Set<Film> films = new HashSet<>();
     private int lastId = 0;
 
     @Override
-    public Film create(Film film){
+    public Film create(Film film) {
         film.setId(++lastId);
         films.add(film);
         return film;
     }
+
     @Override
     public Film updateFilm(Film film) {
         films.add(film);
@@ -31,6 +32,7 @@ public class InMemoryFilmStorage implements FilmStorage{
         log.debug("Текущее количество постов: {}", films.size());
         return films;
     }
+
     @Override
     public void deleteFilm(Film film) {
         films.remove(film);

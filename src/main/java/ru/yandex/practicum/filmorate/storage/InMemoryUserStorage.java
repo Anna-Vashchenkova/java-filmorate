@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Component
-public class InMemoryUserStorage implements UserStorage{
+public class InMemoryUserStorage implements UserStorage {
     protected final Set<User> users = new HashSet<>();
     protected int lastId = 0;
 
@@ -18,6 +18,7 @@ public class InMemoryUserStorage implements UserStorage{
         users.add(user);
         return user;
     }
+
     @Override
     public User updateUser(User user) {
            users.add(user);
@@ -28,6 +29,7 @@ public class InMemoryUserStorage implements UserStorage{
     public Set<User> getUsers() {
         return users;
     }
+
     @Override
     public void deleteUser(User user) {
         users.remove(user);
