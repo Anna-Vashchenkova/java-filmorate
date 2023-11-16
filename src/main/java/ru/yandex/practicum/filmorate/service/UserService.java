@@ -99,6 +99,7 @@ public class UserService {
         User result = userOptional.get();
         return result.getFriends();
     }
+
     public Set<Integer> commonFriends(int userId1, int userId2) {
         Optional<User> userOptional = userStorage.getUserById(userId1);
         Optional<User> userOptional2 = userStorage.getUserById(userId2);
