@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
@@ -43,7 +43,7 @@ public class FilmService {
                 && (film.getDuration() > 0)) {
             Optional<Film> optionalFilm = findAll().stream().filter(film1 -> film1.getId() == film.getId()).findFirst();
             if (optionalFilm.isEmpty()) {
-                throw new NotFoundException("фильма с таким Id не существует");
+                throw new DataNotFoundException("фильма с таким Id не существует");
             }
             Film filmUpdate = optionalFilm.get();
             filmUpdate.setName(film.getName());
@@ -63,7 +63,7 @@ public class FilmService {
     public void deleteFilm(int filmId) {
         Optional<Film> optionalFilm = filmStorage.getById(filmId);
         if (optionalFilm.isEmpty()) {
-            throw new NotFoundException("Фильм не найден.");
+            throw new DataNotFoundException("Фильм не найден.");
         }
         Film film = optionalFilm.get();
         filmStorage.deleteFilm(film);
@@ -72,7 +72,7 @@ public class FilmService {
         User user = userService.getById(userId);
         Optional<Film> optionalFilm = filmStorage.getById(filmId);
         if ((optionalFilm.isEmpty()) || (user == null)) {
-            throw new NotFoundException("Объект не найден.");
+            throw new DataNotFoundException("Объект не найден.");
         }
         Film film = optionalFilm.get();
         Set<Integer> likes = film.getLikes();
@@ -87,7 +87,7 @@ public class FilmService {
         Optional<Film> optionalFilm = filmStorage.getById(filmId);
         User user = userService.getById(userId);
         if ((optionalFilm.isEmpty()) || (user == null)) {
-            throw new NotFoundException("Объект не найден.");
+            throw new DataNotFoundException("Объект не найден.");
         }
         Film film = optionalFilm.get();
         Set<Integer> likes = film.getLikes();

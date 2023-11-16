@@ -35,11 +35,15 @@ public class InMemoryUserStorage implements UserStorage{
 
     @Override
     public Optional<User> getUserById(int userId) {
-        return users.stream().filter(user -> user.getId() == userId).findFirst();
+        return users.stream()
+                .filter(user -> user.getId() == userId)
+                .findFirst();
     }
 
     @Override
     public Optional<User> getByEmail(String email) {
-        return users.stream().filter(user -> user.getEmail() == email).findFirst();
+        return users.stream()
+                .filter(user -> user.getEmail() == email)
+                .findFirst();
     }
 }

@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
+import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
@@ -41,14 +41,14 @@ public class UserService {
 
     public User updateUser(User user) {
         if (user == null) {
-            throw new NotFoundException("Пользователь не найден.");
+            throw new DataNotFoundException("Пользователь не найден.");
         }
         if (user.getEmail().isEmpty()) {
             throw new ValidationException("в переданных данных отсутствует адрес электронной почты");
         }
         Optional<User> optionalUser = userStorage.getUserById(user.getId());
         if (optionalUser.isEmpty()) {
-            throw new NotFoundException("Пользователь не найден.");
+            throw new DataNotFoundException("Пользователь не найден.");
         }
         User userUpdate = optionalUser.get();
         userUpdate.setEmail(user.getEmail());
@@ -66,7 +66,7 @@ public class UserService {
     public void deleteUser(int userId) {
         Optional<User> optionalUser = userStorage.getUserById(userId);
         if (optionalUser.isEmpty()) {
-            throw new NotFoundException("Пользователь не найден.");
+            throw new DataNotFoundException("Пользователь не найден.");
         }
         userStorage.deleteUser(optionalUser.get());
     }
@@ -94,7 +94,7 @@ public class UserService {
     public Set<Integer> getFriends(int userId) {
         Optional<User> userOptional = userStorage.getUserById(userId);
         if (userOptional.isEmpty()) {
-            throw new NotFoundException("Объект не найден");
+            throw new DataNotFoundException("Объект не найден");
         }
         User result = userOptional.get();
         return result.getFriends();
@@ -103,7 +103,7 @@ public class UserService {
         Optional<User> userOptional = userStorage.getUserById(userId1);
         Optional<User> userOptional2 = userStorage.getUserById(userId2);
         if ((userOptional.isEmpty() || (userOptional2.isEmpty()))) {
-            throw new NotFoundException("Объект не найден");
+            throw new DataNotFoundException("Объект не найден");
         }
         User user1 = userStorage.getUserById(userId1).get();
         User user2 = userStorage.getUserById(userId2).get();
@@ -116,7 +116,7 @@ public class UserService {
     public User getById(int userId) {
         Optional<User> userOptional = userStorage.getUserById(userId);
         if (userOptional.isEmpty()) {
-            throw new NotFoundException("Объект не найден");
+            throw new DataNotFoundException("Объект не найден");
         }
         return userStorage.getUserById(userId).get();
     }
