@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
@@ -93,7 +94,7 @@ class FilmControllerTests {
         Film film = new Film(999, "kino2", "---",
                 LocalDate.of(2023, 10, 1), 60, likes);
 
-        ValidationException exception = assertThrows(ValidationException.class, () -> {
+        DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> {
             controller.updateFilm(film);
         });
         assertEquals("фильма с таким Id не существует", exception.getMessage());

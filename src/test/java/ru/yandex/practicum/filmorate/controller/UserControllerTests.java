@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
@@ -95,10 +96,10 @@ class UserControllerTests {
         friends.add(1);
         User user = new User(9999, "anabell@mail.ru", "a777", "anabell", LocalDate.of(2000, 10, 12), friends);
 
-        ValidationException exception = assertThrows(ValidationException.class, () -> {
+        DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> {
             controller.updateUser(user);
         });
-        assertEquals("пользователя с таким Id не существует", exception.getMessage());
+        assertEquals("Пользователь не найден.", exception.getMessage());
     }
 
     @DisplayName("При обновлении пользователя верно обновляются поля")
