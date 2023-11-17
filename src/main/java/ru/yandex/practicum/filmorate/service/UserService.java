@@ -31,7 +31,7 @@ public class UserService {
         if (user.getBirthday().isAfter(LocalDate.now())) {
             throw new ValidationException("дата рождения не может быть в будущем");
         }
-        if (user.getName() == null) {
+        if ((user.getName() == null) || (user.getName().isEmpty())) {
             user.setName(user.getLogin());
         } else if (userStorage.getByEmail(user.getEmail()).isPresent()) {
             throw new ValidationException("пользователь с указанным адресом электронной почты уже был добавлен ранее");
@@ -53,6 +53,9 @@ public class UserService {
         User userUpdate = optionalUser.get();
         userUpdate.setEmail(user.getEmail());
         userUpdate.setLogin(user.getLogin());
+        if ((user.getName() == null) || (user.getName().isEmpty())) {
+            user.setName(user.getLogin());
+        }
         userUpdate.setName(user.getName());
         userUpdate.setBirthday(user.getBirthday());
         userUpdate.setFriends(user.getFriends());
@@ -72,12 +75,11 @@ public class UserService {
     }
 
     public Set<Integer> addFriends(int userId, int friendsId) {
-        User user = userStorage.getUserById(userId).get();
+        User user = getById(userId);
+        User friend = getById(friendsId);
         Set<Integer> userFriends = user.getFriends();
-        if (userFriends.contains(friendsId)) {
-            return userFriends;
-        }
         userFriends.add(friendsId);
+        friend.getFriends().add(userId);
         return userFriends;
     }
 
@@ -91,16 +93,17 @@ public class UserService {
         }
     }
 
-    public Set<Integer> getFriends(int userId) {
-        Optional<User> userOptional = userStorage.getUserById(userId);
-        if (userOptional.isEmpty()) {
-            throw new DataNotFoundException("Объект не найден");
-        }
-        User result = userOptional.get();
-        return result.getFriends();
+    public Set<User> getFriends(int userId) {
+        User user = getById(userId);
+        Set<Integer> friends = user.getFriends();
+        return userSetFromIdSet(friends);
     }
 
-    public Set<Integer> commonFriends(int userId1, int userId2) {
+    private Set<User> userSetFromIdSet(Set<Integer> friends) {
+        return friends.stream().map(this::getById).collect(Collectors.toSet());
+    }
+
+    public Set<User> commonFriends(int userId1, int userId2) {
         Optional<User> userOptional = userStorage.getUserById(userId1);
         Optional<User> userOptional2 = userStorage.getUserById(userId2);
         if ((userOptional.isEmpty() || (userOptional2.isEmpty()))) {
@@ -110,8 +113,7 @@ public class UserService {
         User user2 = userStorage.getUserById(userId2).get();
         Set<Integer> first = user1.getFriends();
         Set<Integer> second = user2.getFriends();
-        Set<Integer> result = first.stream().filter(element -> second.contains(element)).collect(Collectors.toSet());
-        return result;
+        return userSetFromIdSet(first.stream().filter(second::contains).collect(Collectors.toSet()));
     }
 
     public User getById(int userId) {

@@ -61,13 +61,18 @@ public class FilmService {
         }
     }
 
+
     public void deleteFilm(int filmId) {
+        Film film = getById(filmId);
+        filmStorage.deleteFilm(film);
+    }
+
+    public Film getById(int filmId) {
         Optional<Film> optionalFilm = filmStorage.getById(filmId);
         if (optionalFilm.isEmpty()) {
             throw new DataNotFoundException("Фильм не найден.");
         }
-        Film film = optionalFilm.get();
-        filmStorage.deleteFilm(film);
+        return optionalFilm.get();
     }
 
     public Set<Integer> addLikes(int userId, int filmId) {
@@ -100,13 +105,13 @@ public class FilmService {
         }
     }
 
-    public Set<Film> getTop10Films(int count) {
+    public Collection<Film> getTop10Films(int count) {
         return filmStorage.findAll().stream()
                 .sorted(Comparator
-                        .comparingInt(film -> ((Film)film).getLikes().size())
+                        .comparingInt(film -> (((Film) film).getLikes().size() * -1))
                         .thenComparing(film -> ((Film)film).getName()))
                 .limit(count)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
         /*Set<Film> all = filmStorage.findAll();
         List<Film> toSort = new ArrayList<>();
         for (Film film : all) {

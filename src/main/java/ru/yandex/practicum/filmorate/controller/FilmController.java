@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
+
+import java.util.Collection;
 import java.util.Set;
 
 @Slf4j
@@ -18,6 +20,11 @@ public class FilmController {
     @GetMapping("/films")
     public Set<Film> findAll() {
         return filmService.findAll();
+    }
+
+    @GetMapping("/films/{filmId}")
+    public Film getFilm(@PathVariable int filmId) {
+        return filmService.getById(filmId);
     }
 
     @PostMapping(value = "/films")
@@ -35,18 +42,18 @@ public class FilmController {
         filmService.deleteFilm(filmId);
     }
 
-    @PostMapping(value = "/films/{filmId}/likes/{userId}")
+    @PutMapping(value = "/films/{filmId}/like/{userId}")
     public Set<Integer> addLikes(@PathVariable int userId, @PathVariable int filmId) {
         return filmService.addLikes(userId, filmId);
     }
 
-    @DeleteMapping(value = "/films/{filmId}/likes/{userId}")
+    @DeleteMapping(value = "/films/{filmId}/like/{userId}")
     public void deleteLikes(@PathVariable int userId, @PathVariable int filmId) {
         filmService.deleteLikes(userId, filmId);
     }
 
     @GetMapping("/films/popular")
-    public Set<Film> getTop10Films(@RequestParam("count")int count) {
+    public Collection<Film> getTopNFilms(@RequestParam(value = "count", defaultValue = "10") int count) {
         log.info("Поиск " + count + " популярных фильтмов");
         return  filmService.getTop10Films(count);
     }
