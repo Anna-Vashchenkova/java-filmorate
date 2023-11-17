@@ -53,14 +53,12 @@ public class FilmService {
             filmUpdate.setDuration(film.getDuration());
             filmUpdate.setLikes(film.getLikes());
             return filmStorage.updateFilm(film);
-        } else {
-            throw new ValidationException("не выполнены условия: название не может быть пустым;\n" +
-                    "    максимальная длина описания — 200 символов;\n" +
-                    "    дата релиза — не раньше 28 декабря 1895 года;\n" +
-                    "    продолжительность фильма должна быть положительной");
         }
+        throw new ValidationException("не выполнены условия: название не может быть пустым;\n" +
+                "    максимальная длина описания — 200 символов;\n" +
+                "    дата релиза — не раньше 28 декабря 1895 года;\n" +
+                "    продолжительность фильма должна быть положительной");
     }
-
 
     public void deleteFilm(int filmId) {
         Film film = getById(filmId);
