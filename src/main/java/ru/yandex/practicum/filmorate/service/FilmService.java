@@ -103,29 +103,12 @@ public class FilmService {
         }
     }
 
-    public Collection<Film> getTop10Films(int count) {
+    public List<Film> getTopFilms(int count) {
         return filmStorage.findAll().stream()
                 .sorted(Comparator
                         .comparingInt(film -> (((Film) film).getLikes().size() * -1))
                         .thenComparing(film -> ((Film)film).getName()))
                 .limit(count)
                 .collect(Collectors.toList());
-        /*Set<Film> all = filmStorage.findAll();
-        List<Film> toSort = new ArrayList<>();
-        for (Film film : all) {
-            toSort.add(film);
-        }
-        toSort.sort((o1, o2) -> {
-            if (o1.getLikes().size() == o2.getLikes().size())
-                return o1.getName().compareTo(o2.getName());
-            else if (o1.getLikes().size() > o2.getLikes().size())
-                return 1;
-            else return -1;
-        });
-        Set<Film> result = new HashSet<>();
-        for (Film film : toSort) {
-            result.add(film);
-        }
-        return result;*/
     }
 }

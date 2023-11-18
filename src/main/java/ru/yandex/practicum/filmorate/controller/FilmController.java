@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -53,8 +53,8 @@ public class FilmController {
     }
 
     @GetMapping("/films/popular")
-    public Collection<Film> getTopNFilms(@RequestParam(value = "count", defaultValue = "10") int count) {
+    public List<Film> getTopFilms(@RequestParam(value = "count", defaultValue = "10") int count) {
         log.info("Поиск " + count + " популярных фильтмов");
-        return  filmService.getTop10Films(count);
+        return  filmService.getTopFilms(count);
     }
 }
