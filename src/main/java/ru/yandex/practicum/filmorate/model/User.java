@@ -14,8 +14,10 @@ public class User {
     private String name;
     private LocalDate birthday;
     private Set<Integer> friends = new HashSet<>();
+    private Set<FriendRequest> friendRequests = new HashSet<>();
 
-    public User(int id, String email, String login, String name, LocalDate birthday, Set<Integer> friends) {
+    public User(int id, String email, String login, String name, LocalDate birthday,
+                Set<Integer> friends, Set<FriendRequest> friendRequests) {
         this.id = id;
         this.email = email;
         this.login = login;
@@ -23,6 +25,9 @@ public class User {
         this.birthday = birthday;
         if (friends != null) {
             this.friends = friends;
+        }
+        if (friendRequests != null) {
+            this.friendRequests = friendRequests;
         }
     }
 

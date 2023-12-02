@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.FriendRequest;
+import ru.yandex.practicum.filmorate.model.FriendshipStatus;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
@@ -24,7 +26,11 @@ class UserControllerTests {
         Set<Integer> friends = new HashSet<>();
         friends.add(0);
         friends.add(1);
-        User user = new User(1, "", "a777", "anabell", LocalDate.of(2000, 10, 12), friends);
+        Set<FriendRequest> friendRequests = new HashSet<>();
+        FriendRequest request1 = new FriendRequest(0, FriendshipStatus.PENDING);
+        friendRequests.add(request1);
+        User user = new User(1, "", "a777", "anabell", LocalDate.of(2000, 10, 12),
+                friends, friendRequests);
 
         ValidationException exception = assertThrows(ValidationException.class, () -> {
             controller.create(user);
@@ -38,7 +44,11 @@ class UserControllerTests {
         Set<Integer> friends = new HashSet<>();
         friends.add(0);
         friends.add(1);
-        User user = new User(1, "anabell!mail.ru", "a777", "anabell", LocalDate.of(2000, 10, 12), friends);
+        Set<FriendRequest> friendRequests = new HashSet<>();
+        FriendRequest request1 = new FriendRequest(0, FriendshipStatus.PENDING);
+        friendRequests.add(request1);
+        User user = new User(1, "anabell!mail.ru", "a777", "anabell", LocalDate.of(2000, 10, 12),
+                friends, friendRequests);
 
         ValidationException exception = assertThrows(ValidationException.class, () -> {
             controller.create(user);
@@ -52,7 +62,11 @@ class UserControllerTests {
         Set<Integer> friends = new HashSet<>();
         friends.add(0);
         friends.add(1);
-        User user = new User(1, "anabell@mail.ru", "", "anabell", LocalDate.of(2000, 10, 12), friends);
+        Set<FriendRequest> friendRequests = new HashSet<>();
+        FriendRequest request1 = new FriendRequest(0, FriendshipStatus.PENDING);
+        friendRequests.add(request1);
+        User user = new User(1, "anabell@mail.ru", "", "anabell", LocalDate.of(2000, 10, 12),
+                friends, friendRequests);
 
         ValidationException exception = assertThrows(ValidationException.class, () -> {
             controller.create(user);
@@ -66,7 +80,11 @@ class UserControllerTests {
         Set<Integer> friends = new HashSet<>();
         friends.add(0);
         friends.add(1);
-        User user = new User(1, "anabell@mail.ru", "a 777", "anabell", LocalDate.of(2000, 10, 12), friends);
+        Set<FriendRequest> friendRequests = new HashSet<>();
+        FriendRequest request1 = new FriendRequest(0, FriendshipStatus.PENDING);
+        friendRequests.add(request1);
+        User user = new User(1, "anabell@mail.ru", "a 777", "anabell", LocalDate.of(2000, 10, 12),
+                friends, friendRequests);
 
         ValidationException exception = assertThrows(ValidationException.class, () -> {
             controller.create(user);
@@ -80,7 +98,11 @@ class UserControllerTests {
         Set<Integer> friends = new HashSet<>();
         friends.add(0);
         friends.add(1);
-        User user = new User(1, "anabell@mail.ru", "a777", "anabell", LocalDate.of(2025, 10, 12), friends);
+        Set<FriendRequest> friendRequests = new HashSet<>();
+        FriendRequest request1 = new FriendRequest(0, FriendshipStatus.PENDING);
+        friendRequests.add(request1);
+        User user = new User(1, "anabell@mail.ru", "a777", "anabell", LocalDate.of(2025, 10, 12),
+                friends, friendRequests);
 
         ValidationException exception = assertThrows(ValidationException.class, () -> {
             controller.create(user);
@@ -94,7 +116,11 @@ class UserControllerTests {
         Set<Integer> friends = new HashSet<>();
         friends.add(0);
         friends.add(1);
-        User user = new User(9999, "anabell@mail.ru", "a777", "anabell", LocalDate.of(2000, 10, 12), friends);
+        Set<FriendRequest> friendRequests = new HashSet<>();
+        FriendRequest request1 = new FriendRequest(0, FriendshipStatus.PENDING);
+        friendRequests.add(request1);
+        User user = new User(9999, "anabell@mail.ru", "a777", "anabell", LocalDate.of(2000, 10, 12),
+                friends, friendRequests);
 
         DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> {
             controller.updateUser(user);
@@ -108,9 +134,12 @@ class UserControllerTests {
         Set<Integer> friends = new HashSet<>();
         friends.add(0);
         friends.add(1);
-        User user = new User(0, "anabell_543@mail.ru", "a777", "anabell", LocalDate.of(2000, 10, 12), friends);
+        Set<FriendRequest> friendRequests = new HashSet<>();
+        FriendRequest request1 = new FriendRequest(0, FriendshipStatus.PENDING);
+        friendRequests.add(request1);
+        User user = new User(0, "anabell_543@mail.ru", "a777", "anabell", LocalDate.of(2000, 10, 12), friends, friendRequests);
         User resultUser = controller.create(user);
-        User userForUpdate = new User(resultUser.getId(), "anabell_888@mail.ru", "a888", "anabell888", LocalDate.of(2000, 9, 14), friends);
+        User userForUpdate = new User(resultUser.getId(), "anabell_888@mail.ru", "a888", "anabell888", LocalDate.of(2000, 9, 14), friends, friendRequests);
 
         controller.updateUser(userForUpdate);
         Set<User> users = controller.getUsers();
@@ -125,7 +154,11 @@ class UserControllerTests {
         Set<Integer> friends = new HashSet<>();
         friends.add(0);
         friends.add(1);
-        User user = new User(1, "anabell@mail.ru", "a777", null, LocalDate.of(2000, 10, 12), friends);
+        Set<FriendRequest> friendRequests = new HashSet<>();
+        FriendRequest request1 = new FriendRequest(0, FriendshipStatus.PENDING);
+        friendRequests.add(request1);
+        User user = new User(1, "anabell@mail.ru", "a777", null, LocalDate.of(2000, 10, 12),
+                friends, friendRequests);
         controller.create(user);
 
         assertTrue(controller.getUsers().contains(user));
