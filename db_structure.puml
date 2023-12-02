@@ -1,0 +1,8 @@
+@startuml
+entity "Film" as e01 {
+  *id : number <<generated>> PK
+  --
+  *name : text
+  duration : number
+}
+@enduml
