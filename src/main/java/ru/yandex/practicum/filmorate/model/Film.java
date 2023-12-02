@@ -14,8 +14,10 @@ public class Film {
     private LocalDate releaseDate;
     private int duration;
     private Set<Integer> likes = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
 
-    public Film(int id, String name, String description, LocalDate releaseDate, int duration, Set<Integer> likes) {
+    public Film(int id, String name, String description, LocalDate releaseDate, int duration,
+                Set<Integer> likes, Set<Genre> genres) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -23,6 +25,9 @@ public class Film {
         this.duration = duration;
         if (likes != null) {
             this.likes = likes;
+        }
+        if (genres != null) {
+            this.genres = genres;
         }
     }
 

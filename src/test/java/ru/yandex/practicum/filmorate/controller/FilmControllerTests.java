@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
@@ -27,7 +28,9 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Film film = new Film(1, "", "---", LocalDate.of(2023, 1, 15), 90, likes);
+        Set<Genre> genres = new HashSet<>();
+        genres.add(Genre.COMEDY);
+        Film film = new Film(1, "", "---", LocalDate.of(2023, 1, 15), 90, likes, genres);
 
         ValidationException exception = assertThrows(ValidationException.class, () -> controller.create(film));
         assertEquals("не выполнены условия: название не может быть пустым;\n" +
@@ -42,7 +45,9 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Film film = new Film(1, "kino", "---", LocalDate.of(1895, 12, 20), 90, likes);
+        Set<Genre> genres = new HashSet<>();
+        genres.add(Genre.COMEDY);
+        Film film = new Film(1, "kino", "---", LocalDate.of(1895, 12, 20), 90, likes, genres);
 
         ValidationException exception = assertThrows(ValidationException.class, () -> controller.create(film));
         assertEquals("не выполнены условия: название не может быть пустым;\n" +
@@ -57,7 +62,9 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Film film = new Film(1, "kino", "---", LocalDate.of(2000, 12, 20), -10, likes);
+        Set<Genre> genres = new HashSet<>();
+        genres.add(Genre.COMEDY);
+        Film film = new Film(1, "kino", "---", LocalDate.of(2000, 12, 20), -10, likes, genres);
 
         ValidationException exception = assertThrows(ValidationException.class, () -> controller.create(film));
         assertEquals("не выполнены условия: название не может быть пустым;\n" +
@@ -76,7 +83,9 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Film film = new Film(1, "kino", description, LocalDate.of(2000, 12, 20), -10, likes);
+        Set<Genre> genres = new HashSet<>();
+        genres.add(Genre.COMEDY);
+        Film film = new Film(1, "kino", description, LocalDate.of(2000, 12, 20), -10, likes, genres);
 
         ValidationException exception = assertThrows(ValidationException.class, () -> controller.create(film));
         assertEquals("не выполнены условия: название не может быть пустым;\n" +
@@ -91,8 +100,10 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
+        Set<Genre> genres = new HashSet<>();
+        genres.add(Genre.COMEDY);
         Film film = new Film(999, "kino2", "---",
-                LocalDate.of(2023, 10, 1), 60, likes);
+                LocalDate.of(2023, 10, 1), 60, likes, genres);
 
         DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> {
             controller.updateFilm(film);
