@@ -15,9 +15,10 @@ public class Film {
     private int duration;
     private Set<Integer> likes = new HashSet<>();
     private Set<Genre> genres = new HashSet<>();
+    private Rating rating;
 
     public Film(int id, String name, String description, LocalDate releaseDate, int duration,
-                Set<Integer> likes, Set<Genre> genres) {
+                Set<Integer> likes, Set<Genre> genres, Rating rating) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -29,6 +30,7 @@ public class Film {
         if (genres != null) {
             this.genres = genres;
         }
+        this.rating = rating;
     }
 
     @Override
