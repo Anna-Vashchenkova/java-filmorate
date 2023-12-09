@@ -2,63 +2,65 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
+    private final UserService userService;
 
-    private final Set<User> users = new HashSet<>();
-    private int lastId = 0;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @PostMapping
-    public User create(@RequestBody User user) throws ValidationException {
-        if ((user.getEmail() == null) || (user.getEmail().isEmpty()) || (!user.getEmail().contains("@"))) {
-            throw new ValidationException("в переданных данных электронная почта не может быть пустой и должна содержать символ @");
-        }
-        if ((user.getLogin().isEmpty()) || (user.getLogin().contains(" "))) {
-            throw new ValidationException("логин не может быть пустым и содержать пробелы");
-        }
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            throw new ValidationException("дата рождения не может быть в будущем");
-        }
-        if (user.getName() == null) {
-            user.setName(user.getLogin());
-        } else if (users.contains(user)) {
-            throw new ValidationException("пользователь с указанным адресом электронной почты уже был добавлен ранее");
-        }
-        user.setId(++lastId);
-        users.add(user);
-        return user;
+    public User create(@RequestBody User user) {
+        return userService.create(user);
     }
 
     @PutMapping
-    public User updateUser(@RequestBody User user) throws ValidationException {
-        if (user.getEmail().isEmpty()) {
-            throw new ValidationException("в переданных данных отсутствует адрес электронной почты");
-        } else {
-            Optional<User> optionalUser = getUsers().stream().filter(user1 -> user1.getId() == user.getId()).findFirst();
-            if (optionalUser.isEmpty()) {
-                throw new ValidationException("пользователя с таким Id не существует");
-            }
-            User userUpdate = optionalUser.get();
-            userUpdate.setEmail(user.getEmail());
-            userUpdate.setLogin(user.getLogin());
-            userUpdate.setName(user.getName());
-            userUpdate.setBirthday(user.getBirthday());
-            return user;
-        }
+    public User updateUser(@RequestBody User user) {
+        return userService.updateUser(user);
     }
 
     @GetMapping
     public Set<User> getUsers() {
+        return userService.getUsers();
+    }
+
+    @GetMapping("/{userId}")
+    public User getUser(@PathVariable int userId) {
+        return userService.getById(userId);
+    }
+
+    @DeleteMapping("/{userId}")
+    public void delete(@PathVariable("userId")  int userId) {
+        userService.deleteUser(userId);
+    }
+
+    @PutMapping(value = "/{userId}/friends/{friendsId}")
+    public Set<Integer> addFriends(@PathVariable int userId, @PathVariable int friendsId) {
+        return  userService.addFriends(userId, friendsId);
+    }
+
+    @DeleteMapping("/{userId}/friends/{friendsId}")
+    public void deleteFriends(@PathVariable int userId, @PathVariable int friendsId) {
+        userService.deleteFriends(userId, friendsId);
+    }
+
+    @GetMapping("/{userId}/friends")
+    public Set<User> getFriends(@PathVariable int userId) {
+        Set<User> friends = userService.getFriends(userId);
+        return friends;
+    }
+
+    @GetMapping("/{userId}/friends/common/{userId2}")
+    public Set<User> commonFriends(@PathVariable int userId, @PathVariable int userId2) {
+        Set<User> users = userService.commonFriends(userId, userId2);
         return users;
     }
 }
