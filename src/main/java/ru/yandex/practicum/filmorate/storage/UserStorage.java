@@ -18,4 +18,4 @@ public interface UserStorage {
     Optional<User> getUserById(int userId);
 
     Optional<User> getByEmail(String email);
-    }
+}
