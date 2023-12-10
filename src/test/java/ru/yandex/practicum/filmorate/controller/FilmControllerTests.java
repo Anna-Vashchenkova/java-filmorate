@@ -6,7 +6,7 @@ import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.GenreEnum;
-import ru.yandex.practicum.filmorate.model.Rating;
+import ru.yandex.practicum.filmorate.model.MpaRating;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
@@ -31,7 +31,7 @@ class FilmControllerTests {
         likes.add(1);
         Set<GenreEnum> genreEnums = new HashSet<>();
         genreEnums.add(GenreEnum.COMEDY);
-        Film film = new Film(1, "", "---", LocalDate.of(2023, 1, 15), 90, likes, genreEnums, Rating.G);
+        Film film = new Film(1, "", "---", LocalDate.of(2023, 1, 15), 90, likes, genreEnums, MpaRating.builder().build());
 
         ValidationException exception = assertThrows(ValidationException.class, () -> controller.create(film));
         assertEquals("не выполнены условия: название не может быть пустым;\n" +
@@ -48,7 +48,7 @@ class FilmControllerTests {
         likes.add(1);
         Set<GenreEnum> genreEnums = new HashSet<>();
         genreEnums.add(GenreEnum.COMEDY);
-        Film film = new Film(1, "kino", "---", LocalDate.of(1895, 12, 20), 90, likes, genreEnums, Rating.G);
+        Film film = new Film(1, "kino", "---", LocalDate.of(1895, 12, 20), 90, likes, genreEnums, MpaRating.builder().build());
 
         ValidationException exception = assertThrows(ValidationException.class, () -> controller.create(film));
         assertEquals("не выполнены условия: название не может быть пустым;\n" +
@@ -65,7 +65,7 @@ class FilmControllerTests {
         likes.add(1);
         Set<GenreEnum> genreEnums = new HashSet<>();
         genreEnums.add(GenreEnum.COMEDY);
-        Film film = new Film(1, "kino", "---", LocalDate.of(2000, 12, 20), -10, likes, genreEnums, Rating.G);
+        Film film = new Film(1, "kino", "---", LocalDate.of(2000, 12, 20), -10, likes, genreEnums, MpaRating.builder().build());
 
         ValidationException exception = assertThrows(ValidationException.class, () -> controller.create(film));
         assertEquals("не выполнены условия: название не может быть пустым;\n" +
@@ -86,7 +86,7 @@ class FilmControllerTests {
         likes.add(1);
         Set<GenreEnum> genreEnums = new HashSet<>();
         genreEnums.add(GenreEnum.COMEDY);
-        Film film = new Film(1, "kino", description, LocalDate.of(2000, 12, 20), -10, likes, genreEnums, Rating.G);
+        Film film = new Film(1, "kino", description, LocalDate.of(2000, 12, 20), -10, likes, genreEnums, MpaRating.builder().build());
 
         ValidationException exception = assertThrows(ValidationException.class, () -> controller.create(film));
         assertEquals("не выполнены условия: название не может быть пустым;\n" +
@@ -104,7 +104,7 @@ class FilmControllerTests {
         Set<GenreEnum> genreEnums = new HashSet<>();
         genreEnums.add(GenreEnum.COMEDY);
         Film film = new Film(999, "kino2", "---",
-                LocalDate.of(2023, 10, 1), 60, likes, genreEnums, Rating.G);
+                LocalDate.of(2023, 10, 1), 60, likes, genreEnums, MpaRating.builder().build());
 
         DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> {
             controller.updateFilm(film);

@@ -15,10 +15,10 @@ public class Film {
     private int duration;
     private Set<Integer> likes = new HashSet<>();
     private Set<GenreEnum> genreEnums = new HashSet<>();
-    private Rating rating;
+    private MpaRating rating;
 
     public Film(int id, String name, String description, LocalDate releaseDate, int duration,
-                Set<Integer> likes, Set<GenreEnum> genreEnums, Rating rating) {
+                Set<Integer> likes, Set<GenreEnum> genreEnums, MpaRating rating) {
         this.id = id;
         this.name = name;
         this.description = description;
