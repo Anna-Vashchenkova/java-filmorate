@@ -11,7 +11,7 @@ create table if not exists films
     description  varchar(200),
     release_date date not null,
     duration     int not null,
-    rating       int references mpas(id)
+    rating_id    int references mpas(id)
 );
 
 create table if not exists genres
