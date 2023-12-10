@@ -22,8 +22,7 @@ class FilmControllerTests {
 
     private final FilmController controller = new FilmController(
             new FilmService(new InMemoryFilmStorage(), new UserService(new InMemoryUserStorage())));
-    
-    private final static Genre someGenre = Genre.builder().build();
+    private static final Genre someGenre = Genre.builder().build();
 
     @DisplayName("При сохранении фильма с пустым именем необходимо вернуть ошибку")
     @Test
