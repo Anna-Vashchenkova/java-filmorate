@@ -24,17 +24,17 @@ public class GenreController {
     }
 
     @GetMapping
-    public List<Genre> getGenres(){
+    public List<Genre> getGenres() {
         return genreService.getGenres();
     }
 
     @GetMapping("/{genreId}")
-    public Genre getGenres(@PathVariable int genreId){
+    public Genre getGenres(@PathVariable int genreId) {
         return genreService.getById(genreId);
     }
 
     @DeleteMapping("/{genreId}")
-    public void deleteGenres(@PathVariable int genreId){
+    public void deleteGenres(@PathVariable int genreId) {
         genreService.delete(genreId);
     }
 
