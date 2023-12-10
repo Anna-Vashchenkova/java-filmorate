@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Component("databaseFS")
-public class DbFilmStorage implements FilmStorage{
+public class DbFilmStorage implements FilmStorage {
     @Override
     public Film create(Film film) {
         return null;

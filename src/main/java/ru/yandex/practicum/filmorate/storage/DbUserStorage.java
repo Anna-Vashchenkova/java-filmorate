@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Component("databaseUS")
-public class DbUserStorage implements UserStorage{
+public class DbUserStorage implements UserStorage {
     @Override
     public User create(User user) {
         return null;

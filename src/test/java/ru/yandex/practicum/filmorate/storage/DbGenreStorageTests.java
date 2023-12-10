@@ -24,6 +24,7 @@ class DbGenreStorageTests {
     private final static String ACTION_MOVIE = "Боевик";
     private final static String TRAGED_MOVIE = "Трагеть";
     private final static String TRAGEDY_MOVIE = "Трагедия";
+
     @BeforeEach
     public void createStorage() {
         storage = new DbGenreStorage(template);
@@ -38,7 +39,7 @@ class DbGenreStorageTests {
 
     @Test
     @DisplayName("После сохранения нового жанра, его можно найти по ID")
-    public void findSavedGenre(){
+    public void findSavedGenre() {
         Genre genreToSave = Genre.builder()
                 .name(ACTION_MOVIE)
                 .build();
@@ -62,7 +63,7 @@ class DbGenreStorageTests {
 
     @Test
     @DisplayName("Проверка обновления жанра")
-    public void updateGenre(){
+    public void updateGenre() {
         Genre genreToSave = Genre.builder()
                 .name(TRAGED_MOVIE)
                 .build();
