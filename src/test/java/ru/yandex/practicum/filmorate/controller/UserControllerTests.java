@@ -11,6 +11,7 @@ import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -142,7 +143,7 @@ class UserControllerTests {
         User userForUpdate = new User(resultUser.getId(), "anabell_888@mail.ru", "a888", "anabell888", LocalDate.of(2000, 9, 14), friends, friendRequests);
 
         controller.updateUser(userForUpdate);
-        Set<User> users = controller.getUsers();
+        Collection<User> users = controller.getUsers();
         Optional<User> optionalUser = users.stream().filter(user1 -> user1.getId() == userForUpdate.getId()).findFirst();
         assertTrue(optionalUser.isPresent());
         assertEquals(userForUpdate, optionalUser.get());

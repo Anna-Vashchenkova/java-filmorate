@@ -53,7 +53,7 @@ public class DbGenreStorage implements GenreStorage {
 
     @Override
     public List<Genre> findAll() {
-        return jdbcTemplate.query(SELECT_ALL_SQL, this::mapRowToEmployee);
+        return jdbcTemplate.query(SELECT_ALL_SQL, this::mapRowToModel);
     }
 
     @Override
@@ -63,15 +63,15 @@ public class DbGenreStorage implements GenreStorage {
 
     @Override
     public Optional<Genre> getById(int genreId) {
-        return jdbcTemplate.query(SELECT_BY_ID_SQL, this::mapRowToEmployee, genreId).stream().findFirst();
+        return jdbcTemplate.query(SELECT_BY_ID_SQL, this::mapRowToModel, genreId).stream().findFirst();
     }
 
     @Override
     public Optional<Genre> getByName(String name) {
-        return jdbcTemplate.query(SELECT_BY_NAME_SQL, this::mapRowToEmployee, name).stream().findFirst();
+        return jdbcTemplate.query(SELECT_BY_NAME_SQL, this::mapRowToModel, name).stream().findFirst();
     }
 
-    private Genre mapRowToEmployee(ResultSet resultSet, int rowNum) throws SQLException {
+    private Genre mapRowToModel(ResultSet resultSet, int rowNum) throws SQLException {
         return Genre.builder()
                 .id(resultSet.getInt("id"))
                 .name(resultSet.getString("name"))

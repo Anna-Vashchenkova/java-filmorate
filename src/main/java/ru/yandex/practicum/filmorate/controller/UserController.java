@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
+import java.util.Collection;
 import java.util.Set;
 
 @Slf4j
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping
-    public Set<User> getUsers() {
+    public Collection<User> getUsers() {
         return userService.getUsers();
     }
 

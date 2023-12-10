@@ -9,6 +9,7 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -19,7 +20,7 @@ public class UserService {
 
     @Autowired
     public UserService(
-            @Qualifier("inMemoryUS")
+            @Qualifier("databaseUS")
             UserStorage userStorage
     ) {
         this.userStorage = userStorage;
@@ -66,7 +67,7 @@ public class UserService {
         return userStorage.updateUser(user);
     }
 
-    public Set<User> getUsers() {
+    public Collection<User> getUsers() {
         return userStorage.getUsers();
     }
 
