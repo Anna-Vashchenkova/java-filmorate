@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Slf4j
-@Component
+@Component("inMemoryFS")
 public class InMemoryFilmStorage implements FilmStorage {
     private final Set<Film> films = new HashSet<>();
     private int lastId = 0;

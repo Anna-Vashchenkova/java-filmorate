@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-@Component
+@Component("inMemoryUS")
 public class InMemoryUserStorage implements UserStorage {
     protected final Set<User> users = new HashSet<>();
     protected int lastId = 0;
