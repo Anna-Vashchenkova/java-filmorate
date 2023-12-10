@@ -14,6 +14,8 @@ import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,7 +32,7 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Set<Genre> genres = new HashSet<>();
+        List<Genre> genres = new LinkedList<>();
         genres.add(someGenre);
         Film film = new Film(1, "", "---", LocalDate.of(2023, 1, 15), 90, likes, genres, MpaRating.builder().build());
 
@@ -47,7 +49,7 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Set<Genre> genres = new HashSet<>();
+        List<Genre> genres = new LinkedList<>();
         genres.add(someGenre);
         Film film = new Film(1, "kino", "---", LocalDate.of(1895, 12, 20), 90, likes, genres, MpaRating.builder().build());
 
@@ -64,7 +66,7 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Set<Genre> genres = new HashSet<>();
+        List<Genre> genres = new LinkedList<>();
         genres.add(someGenre);
         Film film = new Film(1, "kino", "---", LocalDate.of(2000, 12, 20), -10, likes, genres, MpaRating.builder().build());
 
@@ -85,7 +87,7 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Set<Genre> genres = new HashSet<>();
+        List<Genre> genres = new LinkedList<>();
         genres.add(someGenre);
         Film film = new Film(1, "kino", description, LocalDate.of(2000, 12, 20), -10, likes, genres, MpaRating.builder().build());
 
@@ -102,7 +104,7 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Set<Genre> genres = new HashSet<>();
+        List<Genre> genres = new LinkedList<>();
         genres.add(someGenre);
         Film film = new Film(999, "kino2", "---",
                 LocalDate.of(2023, 10, 1), 60, likes, genres, MpaRating.builder().build());

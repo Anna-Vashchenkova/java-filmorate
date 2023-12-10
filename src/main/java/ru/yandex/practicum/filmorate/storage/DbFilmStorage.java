@@ -24,9 +24,10 @@ public class DbFilmStorage implements FilmStorage {
             "F.ID, F.NAME, F.DESCRIPTION, F.DURATION, F.RELEASE_DATE, M.ID as rating_id, M.NAME as rating_name " +
             "from films as F " +
             "join PUBLIC.MPAS M on M.ID = F.RATING_ID";
-    public static final String SELECT_GENRES = "select * from GENRES " +
+    public static final String SELECT_GENRES = "select GENRES.ID, GENRES.NAME from GENRES " +
             "join PUBLIC.FILM_GENRES FG on GENRES.ID = FG.GENRE_ID " +
-            "where FG.FILM_ID = ?";
+            "where FG.FILM_ID = ? " +
+            "order by GENRE_ID";
     public static final String SELECT_ALL_SQL = FILM_SELECT;
     public static final String SELECT_BY_ID_SQL = FILM_SELECT +
             " where F.ID = ?";
@@ -73,13 +74,13 @@ public class DbFilmStorage implements FilmStorage {
                 .build();
     }
 
-    private Set<Genre> loadGenres(int filmId) {
-        return new HashSet<>(jdbcTemplate.query(SELECT_GENRES, this::mapRowToGenre, filmId));
+    private List<Genre> loadGenres(int filmId) {
+        return jdbcTemplate.query(SELECT_GENRES, this::mapRowToGenre, filmId);
     }
 
     private void updateGenres(int filmId, List<Integer> genresIds) {
         jdbcTemplate.update(DELETE_GENRES_BY_ID_SQL, filmId);
-        genresIds.forEach(
+        new HashSet<>(genresIds).forEach(
                 genreId -> jdbcTemplate.update(INSERT_GENRES_SQL, filmId, genreId)
         );
     }
@@ -93,7 +94,8 @@ public class DbFilmStorage implements FilmStorage {
                 film.getDuration(),
                 film.getMpa().getId(),
                 film.getId());
-        return film;
+        updateGenres(film.getId(), film.getGenres().stream().map(Genre::getId).collect(Collectors.toList()));
+        return getById(film.getId()).get();
     }
 
     @Override
