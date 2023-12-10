@@ -1,11 +1,9 @@
 package ru.yandex.practicum.filmorate.storage;
 
-import lombok.Data;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.model.MpaRating;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.Date;
@@ -15,7 +13,6 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 @Component("databaseUS")
 public class DbUserStorage implements UserStorage {
@@ -90,6 +87,7 @@ public class DbUserStorage implements UserStorage {
     public Optional<User> getByEmail(String email) {
         return jdbcTemplate.query(SELECT_BY_EMAIL_SQL, this::mapRowToModel, email).stream().findFirst();
     }
+
     private User mapRowToModel(ResultSet resultSet, int rowNum) throws SQLException {
         return User.builder()
                 .id(resultSet.getInt("id"))
