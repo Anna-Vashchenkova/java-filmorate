@@ -1,0 +1,1 @@
+INSERT into genres (name) values ('Комедия')

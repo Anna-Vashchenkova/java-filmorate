@@ -63,12 +63,12 @@ public class DbGenreStorage implements GenreStorage {
 
     @Override
     public Optional<Genre> getById(int genreId) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_BY_ID_SQL, this::mapRowToEmployee, genreId));
+        return jdbcTemplate.query(SELECT_BY_ID_SQL, this::mapRowToEmployee, genreId).stream().findFirst();
     }
 
     @Override
     public Optional<Genre> getByName(String name) {
-        return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_BY_NAME_SQL, this::mapRowToEmployee, name));
+        return jdbcTemplate.query(SELECT_BY_NAME_SQL, this::mapRowToEmployee, name).stream().findFirst();
     }
 
     private Genre mapRowToEmployee(ResultSet resultSet, int rowNum) throws SQLException {
