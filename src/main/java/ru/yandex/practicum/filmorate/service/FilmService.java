@@ -20,7 +20,7 @@ public class FilmService {
 
     @Autowired
     public FilmService(
-            @Qualifier("inMemoryFS")
+            @Qualifier("databaseFS")
             FilmStorage filmStorage,
             UserService userService) {
         this.filmStorage = filmStorage;
