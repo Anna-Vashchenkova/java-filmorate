@@ -8,6 +8,7 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import ru.yandex.practicum.filmorate.storage.MpaRatingStorage;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -27,7 +28,7 @@ public class FilmService {
         this.userService = userService;
     }
 
-    public Set<Film> findAll() {
+    public Collection<Film> findAll() {
         return filmStorage.findAll();
     }
 

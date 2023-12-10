@@ -20,8 +20,14 @@ public class DbFilmStorage implements FilmStorage {
     public static final String INSERT_SQL = "insert into " +
             "films(name, description, release_date, duration, rating_id) " +
             "values (?,     ?,          ? ,         ?,          ?)";
-    public static final String SELECT_ALL_SQL = "select * from films";
-    public static final String SELECT_BY_ID_SQL = "select * from films where id = ?";
+    public static final String FILM_SELECT = "select " +
+            "F.ID, F.NAME, F.DESCRIPTION, F.DURATION, F.RELEASE_DATE, M.ID as rating_id, M.NAME as rating_name " +
+            "from films as F " +
+            "join PUBLIC.MPAS M on M.ID = F.RATING_ID";
+    public static final String SELECT_ALL_SQL = FILM_SELECT;
+    public static final String SELECT_BY_ID_SQL = FILM_SELECT +
+                " where F.ID = ?";
+
     public static final String DELETE_BY_ID_SQL = "delete from films where id = ?";
     public static final String SELECT_BY_EMAIL_SQL = "select * from films where email = ?";
     public static final String UPDATE_SQL = "update films set " +
