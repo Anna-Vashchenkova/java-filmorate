@@ -16,11 +16,11 @@ public class Film {
     private LocalDate releaseDate;
     private int duration;
     private Set<Integer> likes = new HashSet<>();
-    private Set<GenreEnum> genreEnums = new HashSet<>();
+    private Set<Genre> genres = new HashSet<>();
     private MpaRating mpa;
 
     public Film(int id, String name, String description, LocalDate releaseDate, int duration,
-                Set<Integer> likes, Set<GenreEnum> genreEnums, MpaRating mpa) {
+                Set<Integer> likes, Set<Genre> genres, MpaRating mpa) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -29,8 +29,8 @@ public class Film {
         if (likes != null) {
             this.likes = likes;
         }
-        if (genreEnums != null) {
-            this.genreEnums = genreEnums;
+        if (genres != null) {
+            this.genres = genres;
         }
         this.mpa = mpa;
     }
