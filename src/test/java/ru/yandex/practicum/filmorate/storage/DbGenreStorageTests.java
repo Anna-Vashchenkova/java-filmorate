@@ -17,9 +17,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class DbGenreStorageTests {
 
-    private final static String ACTION_MOVIE = "Боевик";
-    private final static String TRAGED_MOVIE = "Трагеть";
-    private final static String TRAGEDY_MOVIE = "Трагедия";
+    private static final String ACTION_MOVIE = "Боевик";
+    private static final String TRAGED_MOVIE = "Трагеть";
+    private static final String TRAGEDY_MOVIE = "Трагедия";
 
     @Autowired
     private JdbcTemplate template;
