@@ -17,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
 class DbGenreStorageTests {
 
-    @Autowired
-    private JdbcTemplate template;
-    private DbGenreStorage storage;
-
     private final static String ACTION_MOVIE = "Боевик";
     private final static String TRAGED_MOVIE = "Трагеть";
     private final static String TRAGEDY_MOVIE = "Трагедия";
+
+    @Autowired
+    private JdbcTemplate template;
+    private DbGenreStorage storage;
 
     @BeforeEach
     public void createStorage() {
