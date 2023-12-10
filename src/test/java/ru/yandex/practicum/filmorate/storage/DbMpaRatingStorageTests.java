@@ -34,7 +34,7 @@ class DbMpaRatingStorageTests {
     @DisplayName("Должен возвращать жанр с идентификатором 1")
     public void shouldFindGenreWithId() {
         Optional<MpaRating> rating = storage.getById(1);
-        assertEquals("18+", rating.get().getName());
+        assertEquals("G", rating.get().getName());
     }
 
     @Test
