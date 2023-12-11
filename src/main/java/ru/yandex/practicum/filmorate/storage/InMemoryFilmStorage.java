@@ -45,4 +45,9 @@ public class InMemoryFilmStorage implements FilmStorage {
                 .filter(film -> film.getId() == filmId)
                 .findFirst();
     }
+
+    @Override
+    public void addLike(int filmId, int userId) {
+        getById(filmId).get().getLikes().add(userId);
+    }
 }

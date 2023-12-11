@@ -88,8 +88,8 @@ public class FilmService {
         if (likes.contains(user.getId())) {
             return likes;
         }
-        likes.add(user.getId());
-        return likes;
+        filmStorage.addLike(filmId, userId);
+        return filmStorage.getById(filmId).get().getLikes();
     }
 
     public void deleteLikes(int userId, int filmId) {
