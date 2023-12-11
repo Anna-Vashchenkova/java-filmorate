@@ -1,5 +1,3 @@
-DELETE FROM GENRES;
-DELETE FROM MPAS;
 INSERT into genres (name) values ('Комедия');
 INSERT into genres (name) values ('Драма');
 INSERT into genres (name) values ('Мультфильм');
