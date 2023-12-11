@@ -88,10 +88,10 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public List<User> findUsersByIds(Set<Integer> ids) {
-        String SELECT_BY_IDS_SQL = "select * from users where ID in (" +
+        String selectByIdsSql = "select * from users where ID in (" +
                 String.join(",", Collections.nCopies(ids.size(), "?"))
                 + ") order by ID";
-        return jdbcTemplate.query(SELECT_BY_IDS_SQL, ids.toArray(), this::mapRowToModel);
+        return jdbcTemplate.query(selectByIdsSql, ids.toArray(), this::mapRowToModel);
     }
 
     private User mapRowToModel(ResultSet resultSet, int rowNum) throws SQLException {
