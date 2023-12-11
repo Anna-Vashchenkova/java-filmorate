@@ -17,16 +17,14 @@ import java.util.Optional;
 public class DbFriendshipStorage implements FriendshipStorage {
 
     private static final String SELECT_BETWEEN_SQL = "SELECT * FROM FRIENDS WHERE " +
-            "( (USER_ID = ?) AND (FRIEND_ID=?) ) OR " +
-            "( (FRIEND_ID = ?) AND (USER_ID=?) )";
+            "(USER_ID = ?) AND (FRIEND_ID=?)";
     private static final String DELETE_BETWEEN_SQL = "DELETE FROM FRIENDS WHERE " +
-            "( (USER_ID = ?) AND (FRIEND_ID=?) ) OR " +
-            "( (FRIEND_ID = ?) AND (USER_ID=?) )";
+            "(USER_ID = ?) AND (FRIEND_ID=?)";
     private static final String INSERT_SQL =
             "INSERT INTO FRIENDS (USER_ID, FRIEND_ID, FRIENDSHIP_STATUS) " +
                     "VALUES (           ?,          ?,          ?  )";
     public static final String SELECT_BY_ID_SQL = "SELECT * FROM FRIENDS where ID = ?";
-    public static final String SELECT_BY_USER_ID_SQL = "SELECT * FROM FRIENDS where USER_ID = ? OR FRIEND_ID = ?";
+    public static final String SELECT_BY_USER_ID_SQL = "SELECT * FROM FRIENDS where USER_ID = ?";
     private final JdbcTemplate jdbcTemplate;
 
     public DbFriendshipStorage(JdbcTemplate jdbcTemplate) {
@@ -36,7 +34,7 @@ public class DbFriendshipStorage implements FriendshipStorage {
     @Override
     public Optional<Friendship> findFriendshipBetween(int userId, int friendsId) {
         return jdbcTemplate.query(SELECT_BETWEEN_SQL, this::mapRowToModel,
-                userId, friendsId, userId, friendsId).stream().findFirst();
+                userId, friendsId).stream().findFirst();
     }
 
     @Override
@@ -59,13 +57,13 @@ public class DbFriendshipStorage implements FriendshipStorage {
     public List<Friendship> getFriendshipsForUser(int userId) {
         return jdbcTemplate.query(
                 SELECT_BY_USER_ID_SQL,
-                this::mapRowToModel, userId, userId
+                this::mapRowToModel, userId
         );
     }
 
     @Override
     public void deleteFriendshipBetween(int userId, int friendsId) {
-        jdbcTemplate.update(DELETE_BETWEEN_SQL,userId, friendsId, userId, friendsId);
+        jdbcTemplate.update(DELETE_BETWEEN_SQL,userId, friendsId);
     }
 
     private Optional<Friendship> getById(int id) {
