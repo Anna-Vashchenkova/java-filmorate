@@ -4,8 +4,10 @@ import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component("inMemoryUS")
 public class InMemoryUserStorage implements UserStorage {
@@ -47,5 +49,12 @@ public class InMemoryUserStorage implements UserStorage {
         return users.stream()
                 .filter(user -> user.getEmail() == email)
                 .findFirst();
+    }
+
+    @Override
+    public List<User> findUsersByIds(Set<Integer> ids) {
+        return users.stream()
+                .filter(user -> ids.contains(user.getId()))
+                .collect(Collectors.toList());
     }
 }

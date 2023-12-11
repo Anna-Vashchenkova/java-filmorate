@@ -5,25 +5,29 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.Friendship;
+import ru.yandex.practicum.filmorate.model.FriendshipStatus;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.FriendshipStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
     private final UserStorage userStorage;
+    private final FriendshipStorage friendshipStorage;
 
     @Autowired
     public UserService(
             @Qualifier("databaseUS")
-            UserStorage userStorage
+            UserStorage userStorage,
+            FriendshipStorage friendshipStorage
     ) {
         this.userStorage = userStorage;
+        this.friendshipStorage = friendshipStorage;
     }
 
     public User create(User user) {
@@ -63,11 +67,10 @@ public class UserService {
         }
         userUpdate.setName(user.getName());
         userUpdate.setBirthday(user.getBirthday());
-        userUpdate.setFriends(user.getFriends());
         return userStorage.updateUser(user);
     }
 
-    public Collection<User> getUsers() {
+    public Collection   <User> getUsers() {
         return userStorage.getUsers();
     }
 
@@ -79,29 +82,24 @@ public class UserService {
         userStorage.deleteUser(optionalUser.get());
     }
 
-    public Set<Integer> addFriends(int userId, int friendsId) {
-        User user = getById(userId);
-        User friend = getById(friendsId);
-        Set<Integer> userFriends = user.getFriends();
-        userFriends.add(friendsId);
-        friend.getFriends().add(userId);
-        return userFriends;
-    }
-
     public void deleteFriends(int userId, int friendsId) {
-        User user = userStorage.getUserById(userId).get();
-        Set<Integer> userFriends = user.getFriends();
-        if (userFriends.contains(friendsId)) {
-            userFriends.remove(friendsId);
-        } else {
+        if (friendshipStorage.findFriendshipBetween(userId, friendsId).isEmpty()) {
             throw new ValidationException("В списке друзей нет пользователя с таким id");
+        } else {
+            friendshipStorage.deleteFriendshipBetween(userId, friendsId);
         }
     }
 
-    public Set<User> getFriends(int userId) {
-        User user = getById(userId);
-        Set<Integer> friends = user.getFriends();
-        return userSetFromIdSet(friends);
+    public List<User> getFriends(int userId) {
+        getById(userId);
+        List<Friendship> friendshipa = friendshipStorage.getFriendshipsForUser(userId);
+        Set<Integer> ids = new HashSet<>();
+        friendshipa.forEach(friendship -> {
+            ids.add(friendship.getUserId());
+            ids.add(friendship.getFriendId());
+        });
+        ids.remove(userId);
+        return userStorage.findUsersByIds(ids);
     }
 
     private Set<User> userSetFromIdSet(Set<Integer> friends) {
@@ -114,11 +112,9 @@ public class UserService {
         if ((userOptional.isEmpty() || (userOptional2.isEmpty()))) {
             throw new DataNotFoundException("Объект не найден");
         }
-        User user1 = userStorage.getUserById(userId1).get();
-        User user2 = userStorage.getUserById(userId2).get();
-        Set<Integer> first = user1.getFriends();
-        Set<Integer> second = user2.getFriends();
-        return userSetFromIdSet(first.stream().filter(second::contains).collect(Collectors.toSet()));
+        List<User> friends1 = getFriends(userId1);
+        List<User> friends2 = getFriends(userId2);
+        return friends1.stream().filter(friends2::contains).collect(Collectors.toSet());
     }
 
     public User getById(int userId) {
@@ -127,5 +123,19 @@ public class UserService {
             throw new DataNotFoundException("Объект не найден");
         }
         return userStorage.getUserById(userId).get();
+    }
+
+    public void addUser(int userId, int friendsId) {
+        User user = getById(userId);
+        User friend = getById(friendsId);
+        if (friendshipStorage.findFriendshipBetween(userId, friendsId).isPresent()) {
+            return;
+        }
+        Friendship friendship = Friendship.builder()
+                .userId(userId)
+                .friendId(friendsId)
+                .friendshipStatus(FriendshipStatus.PENDING)
+                .build();
+        Friendship saved = friendshipStorage.create(friendship);
     }
 }

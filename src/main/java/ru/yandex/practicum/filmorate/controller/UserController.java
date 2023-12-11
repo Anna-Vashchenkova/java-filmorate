@@ -6,7 +6,9 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -39,13 +41,14 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public void delete(@PathVariable("userId")  int userId) {
+    public void delete(@PathVariable("userId") int userId) {
         userService.deleteUser(userId);
     }
 
     @PutMapping(value = "/{userId}/friends/{friendsId}")
     public Set<Integer> addFriends(@PathVariable int userId, @PathVariable int friendsId) {
-        return  userService.addFriends(userId, friendsId);
+        userService.addUser(userId, friendsId);
+        return userService.getFriends(userId).stream().map(User::getId).collect(Collectors.toSet());
     }
 
     @DeleteMapping("/{userId}/friends/{friendsId}")
@@ -54,9 +57,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/friends")
-    public Set<User> getFriends(@PathVariable int userId) {
-        Set<User> friends = userService.getFriends(userId);
-        return friends;
+    public List<User> getFriends(@PathVariable int userId) {
+        return userService.getFriends(userId);
     }
 
     @GetMapping("/{userId}/friends/common/{userId2}")

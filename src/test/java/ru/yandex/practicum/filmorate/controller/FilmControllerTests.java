@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.model.MpaRating;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.InMemoryFriendshipStorage;
 import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.time.LocalDate;
@@ -23,7 +24,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class FilmControllerTests {
 
     private final FilmController controller = new FilmController(
-            new FilmService(new InMemoryFilmStorage(), new UserService(new InMemoryUserStorage())));
+            new FilmService(new InMemoryFilmStorage(), new UserService(
+                    new InMemoryUserStorage(),
+                    new InMemoryFriendshipStorage()
+            )
+            ));
     private static final Genre someGenre = Genre.builder().build();
 
     @DisplayName("При сохранении фильма с пустым именем необходимо вернуть ошибку")
