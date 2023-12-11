@@ -44,8 +44,9 @@ public class DbFriendshipStorage implements FriendshipStorage {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(
-                    INSERT_SQL
-                    , new String[]{"id"});
+                    INSERT_SQL,
+                    new String[]{"id"}
+            );
             stmt.setInt(1, friendship.getUserId());
             stmt.setInt(2, friendship.getFriendId());
             stmt.setString(3, friendship.getFriendshipStatus().name());
@@ -57,20 +58,21 @@ public class DbFriendshipStorage implements FriendshipStorage {
     @Override
     public List<Friendship> getFriendshipsForUser(int userId) {
         return jdbcTemplate.query(
-                SELECT_BY_USER_ID_SQL
-                , this::mapRowToModel, userId, userId);
+                SELECT_BY_USER_ID_SQL,
+                this::mapRowToModel, userId, userId
+        );
     }
 
     @Override
     public void deleteFriendshipBetween(int userId, int friendsId) {
-        jdbcTemplate.update(DELETE_BETWEEN_SQL,
-                userId, friendsId, userId, friendsId);
+        jdbcTemplate.update(DELETE_BETWEEN_SQL,userId, friendsId, userId, friendsId);
     }
 
     private Optional<Friendship> getById(int id) {
         return jdbcTemplate.query(
-                SELECT_BY_ID_SQL
-                , this::mapRowToModel, id).stream().findFirst();
+                SELECT_BY_ID_SQL,
+                this::mapRowToModel, id
+        ).stream().findFirst();
     }
 
     private Friendship mapRowToModel(ResultSet resultSet, int rowNum) throws SQLException {
