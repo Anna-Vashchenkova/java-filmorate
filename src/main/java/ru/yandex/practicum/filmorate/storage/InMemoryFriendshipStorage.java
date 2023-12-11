@@ -5,7 +5,7 @@ import ru.yandex.practicum.filmorate.model.Friendship;
 import java.util.List;
 import java.util.Optional;
 
-public class InMemoryFriendshipStorage implements FriendshipStorage{
+public class InMemoryFriendshipStorage implements FriendshipStorage {
     @Override
     public Optional<Friendship> findFriendshipBetween(int userId, int friendsId) {
         return Optional.empty();
