@@ -92,9 +92,9 @@ public class UserService {
 
     public List<User> getFriends(int userId) {
         getById(userId);
-        List<Friendship> friendshipa = friendshipStorage.getFriendshipsForUser(userId);
+        List<Friendship> friendships = friendshipStorage.getFriendshipsForUser(userId);
         Set<Integer> ids = new HashSet<>();
-        friendshipa.forEach(friendship -> {
+        friendships.forEach(friendship -> {
             ids.add(friendship.getUserId());
             ids.add(friendship.getFriendId());
         });
