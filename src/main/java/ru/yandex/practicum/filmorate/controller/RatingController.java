@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.MpaRating;
@@ -9,14 +10,11 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/mpa")
 public class RatingController {
 
     private final RatingService ratingService;
-
-    public RatingController(RatingService genreService) {
-        this.ratingService = genreService;
-    }
 
     @PostMapping
     public MpaRating create(@RequestBody MpaRating rating) {

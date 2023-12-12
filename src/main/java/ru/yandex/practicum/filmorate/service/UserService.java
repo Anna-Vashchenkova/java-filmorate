@@ -70,7 +70,7 @@ public class UserService {
         return userStorage.updateUser(user);
     }
 
-    public Collection<User> getUsers() {
+    public List<User> getUsers() {
         return userStorage.getUsers();
     }
 

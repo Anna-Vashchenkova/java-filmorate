@@ -27,7 +27,7 @@ public class FilmService {
         this.userService = userService;
     }
 
-    public Collection<Film> findAll() {
+    public List<Film> findAll() {
         return filmStorage.findAll();
     }
 
