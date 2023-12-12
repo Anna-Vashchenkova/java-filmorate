@@ -1,34 +1,25 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
+@Builder
 public class User {
     private int id;
     private String email;
     private String login;
     private String name;
     private LocalDate birthday;
-    private Set<Integer> friends = new HashSet<>();
-    private Set<FriendRequest> friendRequests = new HashSet<>();
 
-    public User(int id, String email, String login, String name, LocalDate birthday,
-                Set<Integer> friends, Set<FriendRequest> friendRequests) {
+    public User(int id, String email, String login, String name, LocalDate birthday) {
         this.id = id;
         this.email = email;
         this.login = login;
         this.name = name;
         this.birthday = birthday;
-        if (friends != null) {
-            this.friends = friends;
-        }
-        if (friendRequests != null) {
-            this.friendRequests = friendRequests;
-        }
     }
 
     @Override

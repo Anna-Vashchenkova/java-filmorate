@@ -6,14 +6,17 @@ import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.model.Rating;
+import ru.yandex.practicum.filmorate.model.MpaRating;
 import ru.yandex.practicum.filmorate.service.FilmService;
 import ru.yandex.practicum.filmorate.service.UserService;
-import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.impl.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.impl.InMemoryFriendshipStorage;
+import ru.yandex.practicum.filmorate.storage.impl.InMemoryUserStorage;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -21,7 +24,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class FilmControllerTests {
 
     private final FilmController controller = new FilmController(
-            new FilmService(new InMemoryFilmStorage(), new UserService(new InMemoryUserStorage())));
+            new FilmService(new InMemoryFilmStorage(), new UserService(
+                    new InMemoryUserStorage(),
+                    new InMemoryFriendshipStorage()
+            )
+            ));
+    private static final Genre someGenre = Genre.builder().build();
 
     @DisplayName("При сохранении фильма с пустым именем необходимо вернуть ошибку")
     @Test
@@ -29,9 +37,9 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Set<Genre> genres = new HashSet<>();
-        genres.add(Genre.COMEDY);
-        Film film = new Film(1, "", "---", LocalDate.of(2023, 1, 15), 90, likes, genres, Rating.G);
+        List<Genre> genres = new LinkedList<>();
+        genres.add(someGenre);
+        Film film = new Film(1, "", "---", LocalDate.of(2023, 1, 15), 90, likes, genres, MpaRating.builder().build());
 
         ValidationException exception = assertThrows(ValidationException.class, () -> controller.create(film));
         assertEquals("не выполнены условия: название не может быть пустым;\n" +
@@ -46,9 +54,9 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Set<Genre> genres = new HashSet<>();
-        genres.add(Genre.COMEDY);
-        Film film = new Film(1, "kino", "---", LocalDate.of(1895, 12, 20), 90, likes, genres, Rating.G);
+        List<Genre> genres = new LinkedList<>();
+        genres.add(someGenre);
+        Film film = new Film(1, "kino", "---", LocalDate.of(1895, 12, 20), 90, likes, genres, MpaRating.builder().build());
 
         ValidationException exception = assertThrows(ValidationException.class, () -> controller.create(film));
         assertEquals("не выполнены условия: название не может быть пустым;\n" +
@@ -63,9 +71,9 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Set<Genre> genres = new HashSet<>();
-        genres.add(Genre.COMEDY);
-        Film film = new Film(1, "kino", "---", LocalDate.of(2000, 12, 20), -10, likes, genres, Rating.G);
+        List<Genre> genres = new LinkedList<>();
+        genres.add(someGenre);
+        Film film = new Film(1, "kino", "---", LocalDate.of(2000, 12, 20), -10, likes, genres, MpaRating.builder().build());
 
         ValidationException exception = assertThrows(ValidationException.class, () -> controller.create(film));
         assertEquals("не выполнены условия: название не может быть пустым;\n" +
@@ -84,9 +92,9 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Set<Genre> genres = new HashSet<>();
-        genres.add(Genre.COMEDY);
-        Film film = new Film(1, "kino", description, LocalDate.of(2000, 12, 20), -10, likes, genres, Rating.G);
+        List<Genre> genres = new LinkedList<>();
+        genres.add(someGenre);
+        Film film = new Film(1, "kino", description, LocalDate.of(2000, 12, 20), -10, likes, genres, MpaRating.builder().build());
 
         ValidationException exception = assertThrows(ValidationException.class, () -> controller.create(film));
         assertEquals("не выполнены условия: название не может быть пустым;\n" +
@@ -101,10 +109,10 @@ class FilmControllerTests {
         Set<Integer> likes = new HashSet<>();
         likes.add(0);
         likes.add(1);
-        Set<Genre> genres = new HashSet<>();
-        genres.add(Genre.COMEDY);
+        List<Genre> genres = new LinkedList<>();
+        genres.add(someGenre);
         Film film = new Film(999, "kino2", "---",
-                LocalDate.of(2023, 10, 1), 60, likes, genres, Rating.G);
+                LocalDate.of(2023, 10, 1), 60, likes, genres, MpaRating.builder().build());
 
         DataNotFoundException exception = assertThrows(DataNotFoundException.class, () -> {
             controller.updateFilm(film);

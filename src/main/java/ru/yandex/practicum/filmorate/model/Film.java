@@ -1,12 +1,16 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @Data
+@Builder
 public class Film {
     private int id;
     private String name;
@@ -14,11 +18,11 @@ public class Film {
     private LocalDate releaseDate;
     private int duration;
     private Set<Integer> likes = new HashSet<>();
-    private Set<Genre> genres = new HashSet<>();
-    private Rating rating;
+    private List<Genre> genres = new LinkedList<>();
+    private MpaRating mpa;
 
     public Film(int id, String name, String description, LocalDate releaseDate, int duration,
-                Set<Integer> likes, Set<Genre> genres, Rating rating) {
+                Set<Integer> likes, List<Genre> genres, MpaRating mpa) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -30,7 +34,7 @@ public class Film {
         if (genres != null) {
             this.genres = genres;
         }
-        this.rating = rating;
+        this.mpa = mpa;
     }
 
     @Override

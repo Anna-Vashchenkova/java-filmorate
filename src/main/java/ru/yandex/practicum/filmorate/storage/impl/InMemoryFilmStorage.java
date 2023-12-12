@@ -1,15 +1,14 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
-@Component
+@Component("inMemoryFS")
 public class InMemoryFilmStorage implements FilmStorage {
     private final Set<Film> films = new HashSet<>();
     private int lastId = 0;
@@ -28,9 +27,11 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public Set<Film> findAll() {
+    public List<Film> findAll() {
         log.debug("Текущее количество постов: {}", films.size());
-        return films;
+        List<Film> films1 = new ArrayList<>();
+        films1.addAll(films);
+        return films1;
     }
 
     @Override
@@ -43,5 +44,10 @@ public class InMemoryFilmStorage implements FilmStorage {
         return films.stream()
                 .filter(film -> film.getId() == filmId)
                 .findFirst();
+    }
+
+    @Override
+    public void addLike(int filmId, int userId) {
+        getById(filmId).get().getLikes().add(userId);
     }
 }

@@ -1,13 +1,13 @@
-package ru.yandex.practicum.filmorate.storage;
+package ru.yandex.practicum.filmorate.storage.impl;
 
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
-@Component
+@Component("inMemoryUS")
 public class InMemoryUserStorage implements UserStorage {
     protected final Set<User> users = new HashSet<>();
     protected int lastId = 0;
@@ -21,13 +21,15 @@ public class InMemoryUserStorage implements UserStorage {
 
     @Override
     public User updateUser(User user) {
-           users.add(user);
-            return user;
+        users.add(user);
+        return user;
     }
 
     @Override
-    public Set<User> getUsers() {
-        return users;
+    public List<User> getUsers() {
+        List<User> users1 = new ArrayList<>();
+        users1.addAll(users);
+        return users1;
     }
 
     @Override
@@ -47,5 +49,12 @@ public class InMemoryUserStorage implements UserStorage {
         return users.stream()
                 .filter(user -> user.getEmail() == email)
                 .findFirst();
+    }
+
+    @Override
+    public List<User> findUsersByIds(Set<Integer> ids) {
+        return users.stream()
+                .filter(user -> ids.contains(user.getId()))
+                .collect(Collectors.toList());
     }
 }

@@ -1,21 +1,21 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(value = "/users")
 public class UserController {
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping
     public User create(@RequestBody User user) {
@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping
-    public Set<User> getUsers() {
+    public List<User> getUsers() {
         return userService.getUsers();
     }
 
@@ -38,13 +38,14 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public void delete(@PathVariable("userId")  int userId) {
+    public void delete(@PathVariable("userId") int userId) {
         userService.deleteUser(userId);
     }
 
     @PutMapping(value = "/{userId}/friends/{friendsId}")
     public Set<Integer> addFriends(@PathVariable int userId, @PathVariable int friendsId) {
-        return  userService.addFriends(userId, friendsId);
+        userService.addUser(userId, friendsId);
+        return userService.getFriends(userId).stream().map(User::getId).collect(Collectors.toSet());
     }
 
     @DeleteMapping("/{userId}/friends/{friendsId}")
@@ -53,9 +54,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/friends")
-    public Set<User> getFriends(@PathVariable int userId) {
-        Set<User> friends = userService.getFriends(userId);
-        return friends;
+    public List<User> getFriends(@PathVariable int userId) {
+        return userService.getFriends(userId);
     }
 
     @GetMapping("/{userId}/friends/common/{userId2}")
