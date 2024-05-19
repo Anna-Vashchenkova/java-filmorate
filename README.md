@@ -65,3 +65,10 @@ GROUP BY genre.genre
 ORDER BY cnt DESC
 LIMIT N;
 ```
+
+# Technology stack
+* SpringBoot
+* JDBC
+* PostgreSQL
+* Apache Maven
+* A Collaborative Filtering
